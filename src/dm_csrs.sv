@@ -555,22 +555,22 @@ module dm_csrs #(
   assign ndmreset_o = dmcontrol_q.ndmreset;
 
   // response FIFO
-  fifo_v2 #(
-    .dtype            ( logic [31:0]         ),
-    .DEPTH            ( 2                    )
+  fifo_v3 #(
+    .FALL_THROUGH ( 1'b0         ),
+    .DEPTH        ( 2            ),
+    .dtype        ( logic [31:0] )
   ) i_fifo (
-    .clk_i            ( clk_i                ),
-    .rst_ni           ( dmi_rst_ni           ), // reset only when system is re-set
-    .flush_i          ( 1'b0                 ), // we do not need to flush this queue
-    .testmode_i       ( testmode_i           ),
-    .full_o           ( resp_queue_full      ),
-    .empty_o          ( resp_queue_empty     ),
-    .alm_full_o       (                      ),
-    .alm_empty_o      (                      ),
-    .data_i           ( resp_queue_data      ),
-    .push_i           ( resp_queue_push      ),
-    .data_o           ( dmi_resp_o.data      ),
-    .pop_i            ( resp_queue_pop       )
+    .clk_i      ( clk_i            ),
+    .rst_ni     ( dmi_rst_ni       ),
+    .flush_i    ( 1'b0             ),
+    .testmode_i ( testmode_i       ),
+    .full_o     ( resp_queue_full  ),
+    .empty_o    ( resp_queue_empty ),
+    .usage_o    ( /* not used */   ),
+    .data_i     ( resp_queue_data  ),
+    .push_i     ( resp_queue_push  ),
+    .data_o     ( dmi_resp_o.data  ),
+    .pop_i      ( resp_queue_pop   )
   );
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_regs

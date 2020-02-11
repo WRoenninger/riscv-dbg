@@ -1,14 +1,28 @@
 package:
   name: riscv-dbg
+  authors:
+    - "Andreas Traber <atraber@iis.ee.ethz.ch>"
+    - "Florian Zaruba <zarubaf@iis.ee.ethz.ch>"
+    - "Michael Schaffner <schaffner@iis.ee.ethz.ch>"
+
+dependencies:
+  common_cells:       { git: "https://github.com/pulp-platform/common_cells.git",       version: 1.16.3        }
+  tech_cells_generic: { git: "https://github.com/pulp-platform/tech_cells_generic.git", rev:     release-0.2.0 }
 
 sources:
   files:
-    - src/dm_pkg.sv
+    # Source files grouped in levels. Files in level 0 have no dependencies on files in this
+    # package. Files in level 1 only depend on files in level 0, files in level 2 on files in
+    # levels 1 and 0, etc. Files within a level are ordered alphabetically.
+    # Level 0
     - debug_rom/debug_rom.sv
+    - src/dm_pkg.sv
+    - src/dm_sba.sv
+    - src/dmi_jtag_tap.sv
+    # Level 1
+    - src/dmi_cdc.sv
     - src/dm_csrs.sv
     - src/dm_mem.sv
+    # Level 2
     - src/dm_top.sv
-    - src/dmi_cdc.sv
     - src/dmi_jtag.sv
-    - src/dmi_jtag_tap.sv
-    - src/dm_sba.sv
